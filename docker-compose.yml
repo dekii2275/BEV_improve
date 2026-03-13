@@ -1,0 +1,19 @@
+services:
+  bevheight:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bevheight_env
+    ipc: host # Needed for DataLoader multiprocess
+    volumes:
+      - ./:/workspace/BEVHeight # Mount your repo here
+      - /home/dekii2275/data1:/workspace/data1 # Mount external data
+    working_dir: /workspace/BEVHeight
+    command: tail -f /dev/null # Keep container running
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu, utility, compute]
